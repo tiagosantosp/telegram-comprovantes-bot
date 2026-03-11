@@ -200,8 +200,9 @@ Variaveis de ambiente em `config/config.py`:
 - S3_BUCKET
 - ID_PLANILHA
 
-Credenciais Google:
-- Variavel `GOOGLE_CREDENTIALS` com o JSON da service account.
+Credenciais Google (via S3):
+- `GOOGLE_CREDENTIALS_S3_BUCKET`
+- `GOOGLE_CREDENTIALS_S3_KEY`
 - Service Account com acesso a planilha.
 
 ---
