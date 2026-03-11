@@ -5,6 +5,7 @@ import urllib.request
 from services.telegram_service import send_message, get_file_url
 from services.openai_service import analisar_comprovante as analyze_receipt
 from services.s3_service import upload_file
+from services.sheets_service import add_row
 from utils.utils import sanitize
 
 
@@ -62,7 +63,16 @@ def lambda_handler(event, context):
     _, ext = os.path.splitext(filename)
     new_filename = f"{empresa}-{categoria}-{data}{ext}"
 
-    upload_file(new_filename, file_bytes)
+    link = upload_file(new_filename, file_bytes)
+
+    add_row(
+        dados.get("empresa"),
+        dados.get("valor"),
+        dados.get("categoria"),
+        dados.get("data"),
+        new_filename,
+        link
+    )
 
     resposta = f"""
 ✅ Comprovante registrado
