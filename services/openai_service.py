@@ -14,19 +14,26 @@ def analisar_comprovante(file_bytes, filename, descricao=""):
     arquivo_base64 = base64.b64encode(file_bytes).decode()
 
     prompt = f"""
-Analise este comprovante de pagamento.
+Você é um extrator de dados de comprovantes de pagamento. Use somente informações visíveis no comprovante ou na descrição do usuário.
+Se um campo não estiver claro, use null. Não invente dados. O usuário pode mandar a categoria utilizando o '#' como por exemplo '#agua'.
 
 Descrição do usuário:
 {descricao}
 
-Extraia:
+Extraia exatamente estes campos:
+- empresa (nome do estabelecimento ou recebedor)
+- valor (apenas número, use virgula como separador decimal, ex: 1234,56)
+- data (formato DD-MM-AAAA se possível, senão null)
+- categoria (escolha apenas UMA das categorias padrão abaixo; se não se encaixar, use "OUTROS")
 
-empresa
-valor
-data
-categoria
+Categorias padrão:
+AGUA, LUZ, TELEFONE, INTERNET, ALUGUEL, MANUTENÇÃO CASA, SAUDE, EDUCACAO, MERCADO, COMBUSTIVEL,
+TRANSPORTE, LAZER, ASSINATURA, IMPOSTO, TAXA, SEGURO, BANCO, OUTROS
 
-Responda apenas JSON.
+Regras:
+- Não deduza categoria sem evidência. Se tiver dúvida, use "OUTROS".
+- Se houver mais de um valor, use o valor total pago.
+- Responda SOMENTE com JSON válido e nada mais.
 """
 
     content = [{"type": "input_text", "text": prompt}]
