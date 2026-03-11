@@ -2,7 +2,7 @@ import base64
 import mimetypes
 import json
 from openai import OpenAI
-from config import OPENAI_API_KEY
+from config.config import OPENAI_API_KEY
 
 client = OpenAI(api_key=OPENAI_API_KEY)
 

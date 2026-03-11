@@ -1,6 +1,6 @@
 import json
 import urllib.request
-from config import BASE_URL, FILE_URL
+from config.config import BASE_URL, FILE_URL
 
 
 def send_message(chat_id, text):

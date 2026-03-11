@@ -1,5 +1,5 @@
 import boto3
-from config import S3_BUCKET
+from config.config import S3_BUCKET
 
 s3 = boto3.client("s3")
 

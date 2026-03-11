@@ -1,10 +1,10 @@
 import json
 import urllib.request
 
-from telegram_service import send_message, get_file_url
-from openai_service import analyze_receipt
-from s3_service import upload_file
-from utils import sanitize
+from services.telegram_service import send_message, get_file_url
+from services.openai_service import analisar_comprovante as analyze_receipt
+from services.s3_service import upload_file
+from utils.utils import sanitize
 
 
 def download_file(url):
