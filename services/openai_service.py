@@ -54,4 +54,30 @@ Responda apenas JSON.
         }]
     )
 
-    return json.loads(response.output_text)
+    output_text = (response.output_text or "").strip()
+    if not output_text:
+        # Fallback: some SDK responses expose text inside output content
+        try:
+            output_items = response.output or []
+            for item in output_items:
+                for part in (item.get("content") or []):
+                    if part.get("type") == "output_text" and part.get("text"):
+                        output_text = part["text"].strip()
+                        break
+                if output_text:
+                    break
+        except Exception:
+            output_text = ""
+
+    if not output_text:
+        raise ValueError("OpenAI response has no output_text to parse as JSON.")
+
+    try:
+        return json.loads(output_text)
+    except json.JSONDecodeError:
+        # Try to salvage JSON if the model added extra text
+        start = output_text.find("{")
+        end = output_text.rfind("}")
+        if start != -1 and end != -1 and end > start:
+            return json.loads(output_text[start:end + 1])
+        raise

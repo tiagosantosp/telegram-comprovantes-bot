@@ -1,4 +1,5 @@
 import json
+import os
 import urllib.request
 
 from services.telegram_service import send_message, get_file_url
@@ -56,9 +57,10 @@ def lambda_handler(event, context):
 
     empresa = sanitize(dados.get("empresa", "DESCONHECIDO"))
     categoria = sanitize(dados.get("categoria", "OUTROS"))
-    data = dados.get("data", "SEM_DATA")
+    data = sanitize(dados.get("data", "SEM_DATA"))
 
-    new_filename = f"{empresa}-{categoria}-{data}-{filename}"
+    _, ext = os.path.splitext(filename)
+    new_filename = f"{empresa}-{categoria}-{data}{ext}"
 
     upload_file(new_filename, file_bytes)
 
